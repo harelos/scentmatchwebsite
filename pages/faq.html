@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ – ScentSnap Chrome Extension</title>
+  <meta name="description" content="Frequently asked questions about ScentSnap — how it works, privacy, affiliate links, browser support, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/shared.css">
+  <style>
+    .faq-page-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .faq-category {
+      margin-bottom: 56px;
+    }
+    .faq-category-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--rose-light);
+      letter-spacing: -0.3px;
+    }
+
+    .faq-item {
+      border: 1.5px solid var(--border-light);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .faq-q {
+      padding: 18px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: -0.1px;
+      transition: background 0.2s;
+      gap: 16px;
+    }
+    .faq-q:hover { background: var(--warm); }
+    .faq-toggle {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(181,23,78,0.08);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--rose);
+      font-size: 18px;
+      font-weight: 400;
+      flex-shrink: 0;
+      transition: transform 0.25s, background 0.2s;
+    }
+    .faq-item.open .faq-toggle { transform: rotate(45deg); background: rgba(181,23,78,0.14); }
+    .faq-a {
+      font-size: 14.5px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      padding: 0 22px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.2s;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding: 0 22px 20px; }
+    .faq-a a { color: var(--rose); text-decoration: none; }
+    .faq-a a:hover { text-decoration: underline; }
+
+    /* Affiliate section */
+    .affiliate-section {
+      background: var(--warm);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-top: 20px;
+    }
+    .affiliate-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .affiliate-section p {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+
+    .still-have-q {
+      max-width: 760px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      color: #fff;
+    }
+    .still-have-q h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .still-have-q p { font-size: 15px; color: rgba(255,255,255,0.78); margin-bottom: 24px; }
+    .btn-white-sm {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--rose);
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 14px; font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-white-sm:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="logo-icon">🌸</div>
+    ScentSnap
+  </a>
+  <ul class="nav-links">
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="features.html">Features</a></li>
+    <li><a href="dupe-finder.html">Dupe Finder</a></li>
+    <li><a href="faq.html" class="active">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="nav-cta">Add to Chrome</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="section-label">Answers</div>
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about ScentSnap — from installation to privacy to how our dupe recommendations work.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="faq-page-inner">
+
+    <!-- General -->
+    <div class="faq-category">
+      <div class="faq-category-title">General</div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is ScentSnap completely free?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Yes, 100% free — no subscription, no hidden fees, no premium tier. ScentSnap earns a small commission when users make purchases through Amazon affiliate links in our extension. This happens at no extra cost to you and keeps the extension permanently free.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Do I need to create an account?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">No. Install ScentSnap from the Chrome Web Store and it works instantly. No sign-up, no login, no email required — ever. The extension stores only your local preferences (like UI settings) in your own browser.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How many fragrances are in the database?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Currently 50+ fragrances with full scent profiles, including the most popular luxury perfumes and their best budget alternatives. We regularly update the database with new additions. If you'd like a specific fragrance added, <a href="contact.html">contact us</a>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What websites does ScentSnap work on?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">ScentSnap currently activates automatically on: Amazon, Sephora, Ulta, FragranceNet, Nordstrom, Macy's, Fragrantica, Notino, and FragranceX. We're adding new sites regularly. If there's a site you'd like supported, let us know via our <a href="contact.html">contact page</a>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does ScentSnap work on mobile?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">ScentSnap is a Chrome extension for desktop browsers (Windows, Mac, ChromeOS). It does not currently work on mobile browsers, as Chrome extensions are not supported on iOS or Android Chrome. A mobile version may be explored in the future.</div>
+      </div>
+
+    </div>
+
+    <!-- Privacy & Data -->
+    <div class="faq-category">
+      <div class="faq-category-title">Privacy & Data</div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does ScentSnap track my browsing?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">No. ScentSnap operates entirely using a built-in offline fragrance database. When you visit a supported page, the extension reads the product name visible on that page to identify the fragrance — this processing happens locally in your browser. No data is sent to any external server.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What permissions does ScentSnap request and why?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">ScentSnap requests two Chrome permissions:
+          <br><br><strong>activeTab:</strong> To read the product title on the current page to identify the fragrance. We only access the active tab, only on supported retail sites, and only while the extension is in use.
+          <br><br><strong>storage:</strong> To save your local preferences (like whether you've dismissed the welcome message). All data stays on your device and never leaves it.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does ScentSnap sell my data?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">No. ScentSnap does not collect personal data, so there is nothing to sell. We do not work with data brokers, advertising networks, or third-party analytics services. The only monetization is Amazon affiliate commissions, which are earned when you choose to click and purchase through our links.</div>
+      </div>
+
+    </div>
+
+    <!-- Dupe Finder -->
+    <div class="faq-category">
+      <div class="faq-category-title">Dupe Finder</div>
+
+      <div class="faq-item">
+        <div class="faq-q">How accurate are the dupe match percentages?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Match percentages are estimates based on shared scent notes, scent family classification, and fragrance community consensus — not a guarantee of exact similarity. A 90% match means the two perfumes share very similar dominant notes and character. Scent is subjective, so individual experiences will vary. We believe our curated recommendations are highly reliable, but always suggest trying a sample before committing to a full bottle.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Where does the dupe database come from?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Our dupe database is compiled from fragrance community research, expert comparisons published on platforms like Fragrantica and Basenotes, shared ingredient analysis, and extensive community reviews. It's built by real fragrance enthusiasts, not automated guesswork.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Will dupes show up on every perfume page?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Dupes are shown when the fragrance is in our database and known alternatives have been identified. For fragrances we don't yet cover, ScentSnap will still show the scent profile if available, but may not display dupe recommendations. Our database is regularly expanded.</div>
+      </div>
+
+    </div>
+
+    <!-- Affiliate -->
+    <div class="faq-category" id="affiliate">
+      <div class="faq-category-title">Affiliate Links & Monetization</div>
+
+      <div class="faq-item">
+        <div class="faq-q">Are the Amazon links affiliate links?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Yes. ScentSnap is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program. When you click a product link in our extension and make a purchase, we may earn a small commission. This is at no additional cost to you — you pay the same price you'd see on Amazon directly.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Do affiliate commissions influence which dupes are recommended?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">No. Our dupe recommendations are based entirely on fragrance similarity as determined by community research. We do not give preferential treatment to products with higher commission rates or products we are paid to promote. All recommendations are independent and based solely on scent profile merit.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does using affiliate links cost me anything extra?<span class="faq-toggle">+</span></div>
+        <div class="faq-a">Not at all. You pay exactly the same price you would pay going directly to Amazon. The commission comes from Amazon's end, not from the price you pay. There is no markup and no hidden cost.</div>
+      </div>
+
+      <div class="affiliate-section">
+        <h3>Full Affiliate Disclosure</h3>
+        <p>ScentSnap is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.</p>
+        <p>As an Amazon Associate, ScentSnap earns from qualifying purchases. This means that when you click on a product link in our extension or on this website and subsequently make a purchase on Amazon, we receive a small percentage of that sale as compensation.</p>
+        <p>This affiliate compensation helps us keep ScentSnap entirely free for all users. We appreciate your support.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STILL HAVE QUESTIONS -->
+<section class="section" style="padding-top:0;">
+  <div class="still-have-q">
+    <h3>Still Have Questions?</h3>
+    <p>We're happy to help with anything not answered above. Reach out and we'll get back to you.</p>
+    <a href="contact.html" class="btn-white-sm">Contact Us →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="footer-logo-icon">🌸</div> ScentSnap</div>
+        <p>The smartest way to shop for perfume. Instant scent analysis and budget dupe recommendations, right in your browser.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Extension</h5>
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Download Free</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="features.html">Features</a>
+        <a href="dupe-finder.html">Dupe Finder</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="faq.html#affiliate">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="affiliate-note"><strong style="color:rgba(255,255,255,0.45);">Amazon Affiliate Disclosure:</strong> ScentSnap participates in the Amazon Services LLC Associates Program. As an Amazon Associate, we earn from qualifying purchases at no additional cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 ScentSnap. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features – ScentSnap Chrome Extension</title>
+  <meta name="description" content="Explore all ScentSnap features — scent DNA decoder, dupe finder, longevity ratings, sillage scores, and complete privacy protection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/shared.css">
+  <style>
+    .features-hero-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .feature-block {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--rose-mid));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .feature-block:hover { border-color: var(--rose-light); box-shadow: 0 14px 48px rgba(181,23,78,0.1); transform: translateY(-4px); }
+    .feature-block:hover::after { transform: scaleX(1); }
+    .feature-block-icon {
+      width: 54px; height: 54px;
+      background: linear-gradient(135deg, rgba(181,23,78,0.1), rgba(212,33,95,0.08));
+      border: 1px solid rgba(181,23,78,0.15);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    .feature-block-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: var(--text); letter-spacing: -0.2px; }
+    .feature-block-desc { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+    /* Feature deep-dives */
+    .feature-deep {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .feature-spotlight {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .feature-spotlight:last-child { border-bottom: none; }
+    .feature-spotlight.reverse { direction: rtl; }
+    .feature-spotlight.reverse > * { direction: ltr; }
+
+    .spotlight-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--rose); font-weight: 700; margin-bottom: 10px; }
+    .spotlight-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700; margin-bottom: 14px;
+      color: var(--text); letter-spacing: -0.4px; line-height: 1.15;
+    }
+    .spotlight-desc { font-size: 15px; color: var(--text-mid); line-height: 1.75; margin-bottom: 14px; }
+
+    .spotlight-list { list-style: none; }
+    .spotlight-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-mid); margin-bottom: 10px; line-height: 1.6;
+    }
+    .spotlight-list li::before { content: '✦'; color: var(--rose); font-size: 10px; margin-top: 4px; flex-shrink: 0; }
+
+    /* Visual cards */
+    .spotlight-visual {
+      background: var(--warm);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+    }
+    .vis-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--text-dim); font-weight: 700; margin-bottom: 16px; }
+    .scent-note-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .scent-note-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .scent-note-bar-wrap { flex: 1; margin: 0 14px; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
+    .scent-note-bar { height: 100%; background: linear-gradient(90deg, var(--rose), var(--rose-mid)); border-radius: 3px; }
+    .scent-note-pct { font-size: 12px; color: var(--text-dim); font-weight: 600; min-width: 32px; text-align: right; }
+
+    .rating-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .rating-label { font-size: 13px; font-weight: 600; color: var(--text); }
+    .rating-dots { display: flex; gap: 5px; }
+    .rating-dot { width: 28px; height: 8px; border-radius: 4px; background: var(--border-light); }
+    .rating-dot.filled { background: var(--rose); }
+    .rating-val { font-size: 13px; font-weight: 700; color: var(--rose); min-width: 32px; text-align: right; }
+
+    .privacy-checklist { list-style: none; }
+    .privacy-checklist li {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; color: var(--text-mid); margin-bottom: 12px;
+    }
+    .check-circle {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(10,138,90,0.12);
+      border: 1px solid rgba(10,138,90,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: #0A8A5A; font-size: 12px; flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .features-hero-grid { grid-template-columns: 1fr; max-width: 460px; }
+      .feature-spotlight { grid-template-columns: 1fr; gap: 36px; }
+      .feature-spotlight.reverse { direction: ltr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="logo-icon">🌸</div>
+    ScentSnap
+  </a>
+  <ul class="nav-links">
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="features.html" class="active">Features</a></li>
+    <li><a href="dupe-finder.html">Dupe Finder</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="nav-cta">Add to Chrome</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="section-label">Everything Included Free</div>
+    <h1>ScentSnap Features</h1>
+    <p>A complete fragrance intelligence layer for your browser — scent decoding, savings discovery, and privacy-first design, all in one free extension.</p>
+  </div>
+</div>
+
+<!-- FEATURE GRID OVERVIEW -->
+<section class="section">
+  <div class="features-hero-grid">
+    <div class="feature-block">
+      <div class="feature-block-icon">🧬</div>
+      <div class="feature-block-title">Scent DNA Decoder</div>
+      <div class="feature-block-desc">Plain-English descriptions of what any perfume actually smells like — no marketing gibberish.</div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-block-icon">💸</div>
+      <div class="feature-block-title">Dupe Finder</div>
+      <div class="feature-block-desc">Find 90%-match budget alternatives for any luxury fragrance, with direct Amazon links.</div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-block-icon">⏱️</div>
+      <div class="feature-block-title">Longevity Rating</div>
+      <div class="feature-block-desc">Know how long a perfume lasts before buying. Based on real community testing, not brand claims.</div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-block-icon">💨</div>
+      <div class="feature-block-title">Sillage Score</div>
+      <div class="feature-block-desc">Understand how far a perfume projects — intimate, moderate, or room-filling. Set your expectations.</div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-block-icon">🔒</div>
+      <div class="feature-block-title">Zero Data Collection</div>
+      <div class="feature-block-desc">Entirely offline database. Nothing you browse is ever tracked, stored, or transmitted.</div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-block-icon">⚡</div>
+      <div class="feature-block-title">Instant & Automatic</div>
+      <div class="feature-block-desc">No clicking required. ScentSnap detects perfume pages and activates automatically in under a second.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE DEEP DIVES -->
+<section class="section" style="background:var(--warm);">
+  <div class="section-label">Deep Dive</div>
+  <h2 class="section-title">Feature Details</h2>
+  <p class="section-sub">Understand exactly what each feature does and why it matters.</p>
+  <div class="feature-deep">
+
+    <div class="feature-spotlight">
+      <div class="spotlight-text">
+        <div class="spotlight-label">Feature 01</div>
+        <div class="spotlight-title">Scent DNA Decoder</div>
+        <div class="spotlight-desc">Perfume brand descriptions are notoriously useless. "A luminous cascade of solar radiance" tells you absolutely nothing about how something smells.</div>
+        <div class="spotlight-desc">ScentSnap translates every fragrance into plain English — the actual notes, the mood, the wearability — based on community consensus and fragrance expert analysis.</div>
+        <ul class="spotlight-list">
+          <li>Top, heart, and base note breakdown</li>
+          <li>Plain English descriptions ("warm vanilla + dry wood + light citrus")</li>
+          <li>Scent family classification (floral, woody, oriental, fresh, etc.)</li>
+          <li>Season and occasion guidance</li>
+        </ul>
+      </div>
+      <div class="spotlight-visual">
+        <div class="vis-label">Note Breakdown — Sauvage by Dior</div>
+        <div class="scent-note-row"><span class="scent-note-name">Ambroxan</span><div class="scent-note-bar-wrap"><div class="scent-note-bar" style="width:88%"></div></div><span class="scent-note-pct">88%</span></div>
+        <div class="scent-note-row"><span class="scent-note-name">Bergamot</span><div class="scent-note-bar-wrap"><div class="scent-note-bar" style="width:72%"></div></div><span class="scent-note-pct">72%</span></div>
+        <div class="scent-note-row"><span class="scent-note-name">Pepper</span><div class="scent-note-bar-wrap"><div class="scent-note-bar" style="width:60%"></div></div><span class="scent-note-pct">60%</span></div>
+        <div class="scent-note-row"><span class="scent-note-name">Vetiver</span><div class="scent-note-bar-wrap"><div class="scent-note-bar" style="width:45%"></div></div><span class="scent-note-pct">45%</span></div>
+        <div class="scent-note-row"><span class="scent-note-name">Lavender</span><div class="scent-note-bar-wrap"><div class="scent-note-bar" style="width:38%"></div></div><span class="scent-note-pct">38%</span></div>
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:13px;color:var(--text-mid);font-style:italic;">"Fresh, rugged, and confident — like clean skin on a warm evening with a hint of spice."</div>
+      </div>
+    </div>
+
+    <div class="feature-spotlight reverse">
+      <div class="spotlight-text">
+        <div class="spotlight-label">Feature 02</div>
+        <div class="spotlight-title">Longevity & Sillage Ratings</div>
+        <div class="spotlight-desc">Two of the most important buying factors — and two things brands almost never disclose honestly. ScentSnap shows you community-tested ratings for how long a perfume lasts on skin and how far it projects.</div>
+        <ul class="spotlight-list">
+          <li>Longevity: 0-10 scale (0 = fades in 1hr, 10 = lasts 12+ hours)</li>
+          <li>Sillage: Intimate / Moderate / Strong / Beast-mode</li>
+          <li>Based on aggregated community reviews, not brand marketing</li>
+          <li>Helps you choose for the right occasion</li>
+        </ul>
+      </div>
+      <div class="spotlight-visual">
+        <div class="vis-label">Performance Ratings</div>
+        <div class="rating-row">
+          <span class="rating-label">Longevity</span>
+          <div class="rating-dots">
+            <div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot"></div><div class="rating-dot"></div>
+          </div>
+          <span class="rating-val">8/10</span>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">Sillage</span>
+          <div class="rating-dots">
+            <div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot"></div><div class="rating-dot"></div><div class="rating-dot"></div>
+          </div>
+          <span class="rating-val">7/10</span>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">Versatility</span>
+          <div class="rating-dots">
+            <div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot filled"></div><div class="rating-dot"></div>
+          </div>
+          <span class="rating-val">9/10</span>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--text-dim);">Based on 1,200+ community reviews · Last updated Feb 2026</div>
+      </div>
+    </div>
+
+    <div class="feature-spotlight">
+      <div class="spotlight-text">
+        <div class="spotlight-label">Feature 03</div>
+        <div class="spotlight-title">Privacy-First Design</div>
+        <div class="spotlight-desc">ScentSnap was built with privacy as a first principle, not an afterthought. The entire fragrance database is bundled inside the extension — meaning it works completely offline and never needs to contact any server for fragrance data.</div>
+        <ul class="spotlight-list">
+          <li>No browsing history collected or transmitted</li>
+          <li>No personal identifiers stored anywhere</li>
+          <li>Offline database — no network requests for data lookups</li>
+          <li>Storage permission used only for your local preferences</li>
+          <li>activeTab permission used only on supported sites, only while active</li>
+        </ul>
+      </div>
+      <div class="spotlight-visual">
+        <div class="vis-label">What We Do NOT Collect</div>
+        <ul class="privacy-checklist">
+          <li><span class="check-circle">✓</span>Browsing history or URLs visited</li>
+          <li><span class="check-circle">✓</span>Name, email, or any personal data</li>
+          <li><span class="check-circle">✓</span>Purchase history or behavior</li>
+          <li><span class="check-circle">✓</span>Cookies or user identifiers</li>
+          <li><span class="check-circle">✓</span>Search queries or form inputs</li>
+          <li><span class="check-circle">✓</span>Device or location information</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center;">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">All Features. Zero Cost.</h2>
+  <p class="section-sub">Every feature listed above is completely free. Install ScentSnap and start using them all immediately.</p>
+  <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-primary">Add to Chrome — It's Free</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="footer-logo-icon">🌸</div> ScentSnap</div>
+        <p>The smartest way to shop for perfume. Instant scent analysis and budget dupe recommendations, right in your browser.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Extension</h5>
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Download Free</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="features.html">Features</a>
+        <a href="dupe-finder.html">Dupe Finder</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="faq.html#affiliate">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="affiliate-note"><strong style="color:rgba(255,255,255,0.45);">Amazon Affiliate Disclosure:</strong> ScentSnap participates in the Amazon Services LLC Associates Program. As an Amazon Associate, we earn from qualifying purchases at no additional cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 ScentSnap. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

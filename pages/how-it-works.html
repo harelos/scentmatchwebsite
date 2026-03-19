@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works – ScentSnap Chrome Extension</title>
+  <meta name="description" content="Learn how ScentSnap works — install the free Chrome extension and instantly decode any perfume's scent DNA and find affordable dupes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/shared.css">
+  <style>
+    .steps-detailed {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .step-detailed {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 36px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border-light);
+      align-items: start;
+    }
+    .step-detailed:last-child { border-bottom: none; }
+    .step-detailed-num {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-mid));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 6px 20px rgba(181,23,78,0.28);
+    }
+    .step-detailed-content {}
+    .step-detailed-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--rose); font-weight: 700; margin-bottom: 8px;
+    }
+    .step-detailed-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px; font-weight: 700; margin-bottom: 12px;
+      color: var(--text); letter-spacing: -0.4px;
+    }
+    .step-detailed-desc {
+      font-size: 16px; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px;
+    }
+    .step-detailed-note {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--warm); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 16px;
+      font-size: 13px; color: var(--text-mid);
+    }
+    .step-detailed-note strong { color: var(--rose); }
+
+    .sites-grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .site-chip {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .site-chip:hover { border-color: var(--rose-light); color: var(--rose); }
+    .site-chip span { display: block; font-size: 22px; margin-bottom: 6px; }
+
+    .cta-banner {
+      max-width: 700px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      color: #fff;
+    }
+    .cta-banner h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.3px;
+    }
+    .cta-banner p { font-size: 16px; color: rgba(255,255,255,0.78); margin-bottom: 28px; }
+
+    @media (max-width: 700px) {
+      .step-detailed { grid-template-columns: 1fr; gap: 20px; }
+      .sites-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="logo-icon">🌸</div>
+    ScentSnap
+  </a>
+  <ul class="nav-links">
+    <li><a href="how-it-works.html" class="active">How It Works</a></li>
+    <li><a href="features.html">Features</a></li>
+    <li><a href="dupe-finder.html">Dupe Finder</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="nav-cta">Add to Chrome</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="section-label">Simple & Instant</div>
+    <h1>How ScentSnap Works</h1>
+    <p>From installation to your first money-saving dupe discovery — ScentSnap takes less than 60 seconds to set up, and zero effort to use.</p>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section class="section">
+  <div class="steps-detailed">
+
+    <div class="step-detailed">
+      <div class="step-detailed-num">1</div>
+      <div class="step-detailed-content">
+        <div class="step-detailed-label">Step One</div>
+        <div class="step-detailed-title">Install the Extension</div>
+        <div class="step-detailed-desc">Head to the Chrome Web Store and click "Add to Chrome." The extension installs in one click. No account required, no email, no payment — just click and you're done. ScentSnap appears as a small icon in your Chrome toolbar.</div>
+        <div class="step-detailed-note">🔒 <span><strong>Privacy note:</strong> We never ask for personal information. Ever.</span></div>
+      </div>
+    </div>
+
+    <div class="step-detailed">
+      <div class="step-detailed-num">2</div>
+      <div class="step-detailed-content">
+        <div class="step-detailed-label">Step Two</div>
+        <div class="step-detailed-title">Browse Your Favorite Retailers</div>
+        <div class="step-detailed-desc">Visit Amazon, Sephora, Ulta, FragranceNet, Nordstrom, Macy's, Fragrantica, or any other supported site. No special steps needed — simply browse as you normally would. ScentSnap silently watches for perfume pages in the background.</div>
+        <div class="step-detailed-note">🛍️ <span><strong>8+ supported retailers</strong> and growing every month.</span></div>
+      </div>
+    </div>
+
+    <div class="step-detailed">
+      <div class="step-detailed-num">3</div>
+      <div class="step-detailed-content">
+        <div class="step-detailed-label">Step Three</div>
+        <div class="step-detailed-title">ScentSnap Activates Automatically</div>
+        <div class="step-detailed-desc">When you land on a perfume product page, ScentSnap automatically detects the fragrance name and cross-references our built-in database. Within a second, a panel appears showing the perfume's complete scent profile in plain English — no bizarre marketing poetry, just clear descriptions like "warm vanilla, dry sandalwood, touch of citrus."</div>
+        <div class="step-detailed-note">⚡ <span><strong>Instant:</strong> No clicks. No loading. Just automatic intelligence.</span></div>
+      </div>
+    </div>
+
+    <div class="step-detailed">
+      <div class="step-detailed-num">4</div>
+      <div class="step-detailed-content">
+        <div class="step-detailed-label">Step Four</div>
+        <div class="step-detailed-title">Discover Dupes & Save</div>
+        <div class="step-detailed-desc">Below the scent profile, ScentSnap lists the best matching affordable alternatives — each with a match percentage, price comparison, and direct Amazon shopping link. The savings are displayed prominently so you know exactly how much you're keeping. The choice is always yours, but now it's an informed one.</div>
+        <div class="step-detailed-note">💸 <span>Users save an <strong>average of $240</strong> per purchase decision.</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUPPORTED SITES -->
+<section class="section" style="background:var(--warm);padding-top:80px;padding-bottom:80px;">
+  <div class="section-label">Compatibility</div>
+  <h2 class="section-title">Works On These Retailers</h2>
+  <p class="section-sub">ScentSnap activates automatically on all supported sites. More are added regularly.</p>
+  <div class="sites-grid">
+    <div class="site-chip"><span>🛒</span>Amazon</div>
+    <div class="site-chip"><span>💄</span>Sephora</div>
+    <div class="site-chip"><span>🌸</span>Ulta</div>
+    <div class="site-chip"><span>🧴</span>FragranceNet</div>
+    <div class="site-chip"><span>🏬</span>Nordstrom</div>
+    <div class="site-chip"><span>🏪</span>Macy's</div>
+    <div class="site-chip"><span>📖</span>Fragrantica</div>
+    <div class="site-chip"><span>+</span>More soon</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="cta-banner">
+    <h3>Ready to Shop Smarter?</h3>
+    <p>Install ScentSnap free and start finding dupes on your next perfume purchase.</p>
+    <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-white" style="display:inline-flex;align-items:center;gap:9px;background:#fff;color:var(--rose);padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 6px 24px rgba(0,0,0,0.12);transition:all 0.2s;">
+      Add to Chrome — It's Free
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="footer-logo-icon">🌸</div> ScentSnap</div>
+        <p>The smartest way to shop for perfume. Instant scent analysis and budget dupe recommendations, right in your browser.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Extension</h5>
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Download Free</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="features.html">Features</a>
+        <a href="dupe-finder.html">Dupe Finder</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="faq.html#affiliate">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="affiliate-note"><strong style="color:rgba(255,255,255,0.45);">Amazon Affiliate Disclosure:</strong> ScentSnap participates in the Amazon Services LLC Associates Program. As an Amazon Associate, we earn from qualifying purchases at no additional cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 ScentSnap. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

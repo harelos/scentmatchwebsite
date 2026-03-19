@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScentSnap – Perfume Finder & Dupe Deals | Free Chrome Extension</title>
+  <meta name="description" content="ScentSnap is a free Chrome extension that instantly reveals a perfume's scent DNA, finds 90%-match dupes at 1/10th the price, and helps you shop smarter on Amazon.">
+  <meta property="og:title" content="ScentSnap – Find Cheaper Perfume Dupes Instantly">
+  <meta property="og:description" content="Free Chrome extension. Snap any perfume's secret — see what it smells like and find affordable alternatives.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <style>
+    /* ── HERO ──────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 5% 80px;
+      background: linear-gradient(160deg, #FEF9F4 0%, #FAE8F0 55%, #FFF5F8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(181,23,78,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(212,33,95,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Decorative scent rings */
+    .hero-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(181,23,78,0.08);
+      pointer-events: none;
+    }
+    .ring-1 { width: 700px; height: 700px; top: 50%; right: -200px; transform: translateY(-50%); }
+    .ring-2 { width: 500px; height: 500px; top: 50%; right: -100px; transform: translateY(-50%); }
+    .ring-3 { width: 300px; height: 300px; top: 50%; right: 0; transform: translateY(-50%); }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(181,23,78,0.07);
+      border: 1px solid rgba(181,23,78,0.18);
+      border-radius: 24px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--rose);
+      margin-bottom: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 5.5vw, 64px);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 22px;
+      letter-spacing: -0.8px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      margin-bottom: 38px;
+      max-width: 460px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hero-note {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 14px;
+    }
+
+    /* Extension Mockup */
+    .hero-visual { position: relative; }
+
+    .mockup-float {
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .mockup-wrapper {
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+      border-radius: 22px;
+      padding: 3px;
+      box-shadow: 0 32px 80px rgba(181,23,78,0.28), 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    .mockup-inner {
+      background: #120810;
+      border-radius: 20px;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .mockup-header {
+      background: linear-gradient(135deg, #9C1050, #6B0035);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mockup-logo-wrap { display: flex; align-items: center; gap: 9px; }
+    .mockup-logo-icon {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.16);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .mockup-logo-text { color: #fff; font-weight: 700; font-size: 14px; letter-spacing: -0.2px; }
+    .mockup-close { color: rgba(255,255,255,0.4); font-size: 16px; line-height: 1; }
+
+    .mockup-body { padding: 14px 16px 0; }
+
+    .mockup-perfume-name { color: #F0EBF5; font-size: 19px; font-weight: 700; line-height: 1.2; letter-spacing: -0.3px; }
+    .mockup-perfume-brand { color: #E01E8C; font-size: 11.5px; font-weight: 600; margin-top: 3px; }
+
+    .mockup-tags { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
+    .mockup-tag {
+      background: rgba(224,30,140,0.14);
+      border: 1px solid rgba(224,30,140,0.22);
+      border-radius: 12px;
+      padding: 3px 9px;
+      font-size: 10.5px;
+      color: #E01E8C;
+      font-weight: 600;
+    }
+    .mockup-tag-plain {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.45);
+    }
+
+    .mockup-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 14px 0; }
+
+    .mockup-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.28); font-weight: 700; margin-bottom: 6px; }
+    .mockup-smell-text { font-size: 11.5px; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.55; }
+
+    .mockup-stats { display: flex; gap: 6px; margin: 14px 0; }
+    .mockup-stat {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+    }
+    .mockup-stat-val { color: #F0EBF5; font-size: 15px; font-weight: 700; line-height: 1; }
+    .mockup-stat-label { color: rgba(255,255,255,0.3); font-size: 8.5px; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+    .mockup-dupe-section { padding: 0 0 14px; }
+    .mockup-dupe {
+      background: rgba(52,211,153,0.05);
+      border: 1px solid rgba(52,211,153,0.14);
+      border-radius: 9px;
+      padding: 10px 12px;
+      margin-bottom: 7px;
+    }
+    .mockup-dupe-row { display: flex; justify-content: space-between; align-items: flex-start; }
+    .mockup-dupe-name { color: #F0EBF5; font-size: 12.5px; font-weight: 700; }
+    .mockup-dupe-brand { color: rgba(255,255,255,0.38); font-size: 10px; margin-top: 2px; }
+    .mockup-dupe-badge { background: rgba(52,211,153,0.14); border: 1px solid rgba(52,211,153,0.18); border-radius: 8px; padding: 2px 8px; font-size: 10px; font-weight: 700; color: #34D399; }
+    .mockup-dupe-save { color: #34D399; font-size: 10.5px; font-weight: 600; margin: 5px 0 7px; }
+    .mockup-dupe-btn { display: inline-block; background: rgba(224,30,140,0.14); border: 1px solid rgba(224,30,140,0.22); color: #E01E8C; padding: 5px 11px; border-radius: 7px; font-size: 10px; font-weight: 700; }
+
+    /* Shadow badge */
+    .mockup-shadow-badge {
+      position: absolute;
+      bottom: -18px;
+      right: 28px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: var(--shadow-lg);
+      animation: float 5s ease-in-out infinite;
+      animation-delay: -2s;
+    }
+    .badge-icon { font-size: 22px; }
+    .badge-text { font-size: 12px; font-weight: 600; color: var(--text); }
+    .badge-sub { font-size: 11px; color: var(--text-dim); font-weight: 400; }
+
+    /* ── STATS BAR ───────────────────────── */
+    .stats-bar {
+      background: var(--rose);
+      padding: 32px 5%;
+    }
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,0.72); margin-top: 4px; }
+
+    /* ── HOW IT WORKS ────────────────────── */
+    .steps-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .step-card {
+      text-align: center;
+      padding: 38px 26px;
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 20px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--rose-mid));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .step-card:hover { border-color: var(--rose-light); box-shadow: 0 16px 48px rgba(181,23,78,0.1); transform: translateY(-5px); }
+    .step-card:hover::before { opacity: 1; }
+    .step-num {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-mid));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #fff;
+      margin: 0 auto 16px;
+    }
+    .step-icon { font-size: 32px; margin-bottom: 14px; display: block; }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 9px; color: var(--text); letter-spacing: -0.2px; }
+    .step-desc { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
+
+    /* ── FEATURES ────────────────────────── */
+    .features-bg { background: var(--warm); }
+    .features-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 18px;
+      padding: 28px;
+      transition: all 0.3s;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .feature-card:hover { border-color: var(--rose-light); box-shadow: 0 8px 32px rgba(181,23,78,0.09); }
+    .feature-icon {
+      width: 48px; height: 48px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(181,23,78,0.09), rgba(212,33,95,0.09));
+      border: 1px solid rgba(181,23,78,0.14);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .feature-text {}
+    .feature-title { font-size: 16px; font-weight: 700; margin-bottom: 7px; color: var(--text); letter-spacing: -0.2px; }
+    .feature-desc { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
+
+    /* ── DUPE SECTION ────────────────────── */
+    .dupes-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .dupes-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.12;
+      letter-spacing: -0.4px;
+    }
+    .dupes-text p { font-size: 15px; color: var(--text-mid); line-height: 1.75; margin-bottom: 14px; }
+    .dupes-check-list { list-style: none; margin-top: 18px; }
+    .dupes-check-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14.5px; color: var(--text-mid); margin-bottom: 12px;
+    }
+    .check-icon { color: var(--rose); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+    .dupe-example-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .dupe-card-head {
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      padding: 18px 22px;
+      color: #fff;
+    }
+    .dupe-card-head h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; font-weight: 700; margin-bottom: 4px; }
+    .dupe-card-head span { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; }
+    .dupe-card-body { padding: 18px 22px; }
+    .dupe-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-dim); font-weight: 700; margin-bottom: 14px; }
+    .dupe-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .dupe-row:last-child { border-bottom: none; }
+    .dupe-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .dupe-brand { font-size: 12px; color: var(--text-dim); }
+    .dupe-price { font-size: 15px; font-weight: 700; color: var(--text); text-align: right; }
+    .dupe-savings { font-size: 11.5px; color: #0A8A5A; font-weight: 600; }
+
+    /* ── TESTIMONIALS ────────────────────── */
+    .testi-bg { background: var(--warm); }
+    .testi-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .testi-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 18px;
+      padding: 28px 24px;
+    }
+    .testi-stars { color: #F4A825; font-size: 14px; margin-bottom: 12px; letter-spacing: 1px; }
+    .testi-text { font-size: 14px; color: var(--text-mid); line-height: 1.72; margin-bottom: 18px; font-style: italic; }
+    .testi-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .testi-handle { font-size: 12px; color: var(--text-dim); }
+
+    /* ── FAQ INLINE ──────────────────────── */
+    .faq-inner { max-width: 700px; margin: 0 auto; }
+    .faq-item {
+      border: 1.5px solid var(--border-light);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .faq-q {
+      padding: 18px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: -0.1px;
+      transition: background 0.2s;
+    }
+    .faq-q:hover { background: var(--warm); }
+    .faq-q::after { content: '+'; color: var(--rose); font-size: 20px; font-weight: 400; transition: transform 0.25s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.72;
+      padding: 0 22px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
+
+    /* ── FINAL CTA ───────────────────────── */
+    .final-cta {
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+      padding: 96px 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    }
+    .final-cta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+    .final-cta > p { font-size: 17px; color: rgba(255,255,255,0.78); margin-bottom: 36px; position: relative; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; color: var(--rose);
+      padding: 16px 32px; border-radius: 14px;
+      font-size: 15px; font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.14);
+      transition: all 0.2s;
+      position: relative;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(0,0,0,0.2); }
+    .final-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 18px; position: relative; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-ring { display: none; }
+      .steps-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .features-grid { grid-template-columns: 1fr; max-width: 500px; }
+      .dupes-inner { grid-template-columns: 1fr; gap: 40px; }
+      .testi-grid { grid-template-columns: 1fr; max-width: 420px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">🌸</div>
+    ScentSnap
+  </a>
+  <ul class="nav-links">
+    <li><a href="pages/how-it-works.html">How It Works</a></li>
+    <li><a href="pages/features.html">Features</a></li>
+    <li><a href="pages/dupe-finder.html">Dupe Finder</a></li>
+    <li><a href="pages/faq.html">FAQ</a></li>
+    <li><a href="pages/contact.html">Contact</a></li>
+    <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="nav-cta">Add to Chrome</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ring ring-1"></div>
+  <div class="hero-ring ring-2"></div>
+  <div class="hero-ring ring-3"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🌸 Free Chrome Extension · No Account Needed</div>
+      <h1>Smell the Secret.<br><em>Skip the Price Tag.</em></h1>
+      <p class="hero-sub">Instantly understand what any perfume smells like — and find 90%-match dupes at a fraction of the price. Right on Amazon, Sephora, and Ulta.</p>
+      <div class="hero-actions">
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 8 L22 12" stroke="currentColor" stroke-width="2"/><path d="M12 8 L6 17" stroke="currentColor" stroke-width="2"/><path d="M6 17 L22 12" stroke="currentColor" stroke-width="2"/></svg>
+          Add to Chrome — Free
+        </a>
+        <a href="pages/how-it-works.html" class="btn-secondary">
+          See how it works
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+      <p class="hero-note">Works on Amazon · Sephora · Ulta · FragranceNet · and more</p>
+    </div>
+    <div class="hero-visual">
+      <div class="mockup-float">
+        <div class="mockup-wrapper">
+          <div class="mockup-inner">
+            <div class="mockup-header">
+              <div class="mockup-logo-wrap">
+                <div class="mockup-logo-icon">🌸</div>
+                <div class="mockup-logo-text">ScentSnap</div>
+              </div>
+              <div class="mockup-close">✕</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-perfume-name">Baccarat Rouge 540</div>
+              <div class="mockup-perfume-brand">Maison Francis Kurkdjian · ~$325</div>
+              <div class="mockup-tags">
+                <span class="mockup-tag">Floral</span>
+                <span class="mockup-tag">Woody</span>
+                <span class="mockup-tag">Amber</span>
+                <span class="mockup-tag mockup-tag-plain">Unisex</span>
+              </div>
+              <hr class="mockup-divider">
+              <div class="mockup-label">Scent Profile</div>
+              <div class="mockup-smell-text">"Warm amberwood, jasmine, and a light hint of saffron — sophisticated and long-lasting."</div>
+              <div class="mockup-stats">
+                <div class="mockup-stat"><div class="mockup-stat-val">9/10</div><div class="mockup-stat-label">Longevity</div></div>
+                <div class="mockup-stat"><div class="mockup-stat-val">8/10</div><div class="mockup-stat-label">Sillage</div></div>
+                <div class="mockup-stat"><div class="mockup-stat-val">92%</div><div class="mockup-stat-label">Satisfaction</div></div>
+              </div>
+              <div class="mockup-label">Cheaper Alternatives</div>
+              <div class="mockup-dupe-section">
+                <div class="mockup-dupe">
+                  <div class="mockup-dupe-row">
+                    <div>
+                      <div class="mockup-dupe-name">Amber Oud Rouge</div>
+                      <div class="mockup-dupe-brand">Al Haramain · 60ml</div>
+                    </div>
+                    <span class="mockup-dupe-badge">90% Match</span>
+                  </div>
+                  <div class="mockup-dupe-save">~$35 · Save $290</div>
+                  <span class="mockup-dupe-btn">View on Amazon →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-shadow-badge">
+          <div class="badge-icon">💰</div>
+          <div>
+            <div class="badge-text">Average savings</div>
+            <div class="badge-sub">$240 per purchase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Fragrances in database</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">90%</div>
+      <div class="stat-label">Avg. dupe match accuracy</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$240</div>
+      <div class="stat-label">Average savings per purchase</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Free · No account needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-label">Simple Process</div>
+  <h2 class="section-title">How ScentSnap Works</h2>
+  <p class="section-sub">Three seconds from installing to saving hundreds on your next perfume purchase.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <span class="step-icon">🔧</span>
+      <div class="step-title">Install Free</div>
+      <div class="step-desc">Add ScentSnap to Chrome in one click. No account, no sign-up, no payment — ever.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <span class="step-icon">🛍️</span>
+      <div class="step-title">Browse Normally</div>
+      <div class="step-desc">Shop Amazon, Sephora, Ulta, and other supported retailers as you normally would.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <span class="step-icon">✨</span>
+      <div class="step-title">Snap the Secret</div>
+      <div class="step-desc">ScentSnap automatically shows the scent DNA, ratings, and affordable dupes on any perfume page.</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:44px;">
+    <a href="pages/how-it-works.html" class="btn-secondary">See full details →</a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-bg" id="features">
+  <div class="section-label">What You Get</div>
+  <h2 class="section-title">Everything You Need to Shop Smart</h2>
+  <p class="section-sub">ScentSnap layers intelligent fragrance data directly onto your shopping experience.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧬</div>
+      <div class="feature-text">
+        <div class="feature-title">Instant Scent DNA</div>
+        <div class="feature-desc">Forget confusing poetry about "petrichor" and "ineffable warmth." ScentSnap translates any perfume into plain English descriptions you'll actually understand.</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💸</div>
+      <div class="feature-text">
+        <div class="feature-title">Dupe Finder</div>
+        <div class="feature-desc">Find budget alternatives that smell 90%+ similar to designer fragrances at 10% of the price — curated from trusted fragrance community research.</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⏱️</div>
+      <div class="feature-text">
+        <div class="feature-title">Longevity & Sillage Ratings</div>
+        <div class="feature-desc">Know before you buy how long a perfume lasts and how far it projects. Real community-based ratings, not brand marketing copy.</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏪</div>
+      <div class="feature-text">
+        <div class="feature-title">Works on 8+ Retailers</div>
+        <div class="feature-desc">Amazon, Sephora, Ulta, FragranceNet, Nordstrom, Macy's, Fragrantica, and more — ScentSnap activates automatically on any supported site.</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-text">
+        <div class="feature-title">100% Private</div>
+        <div class="feature-desc">No data collection. No tracking. ScentSnap runs entirely on a local offline database — nothing you browse is ever sent anywhere.</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🆓</div>
+      <div class="feature-text">
+        <div class="feature-title">Completely Free</div>
+        <div class="feature-desc">No subscriptions, no premium tiers, no paywalls. ScentSnap earns through Amazon affiliate commissions at no extra cost to you.</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:44px;">
+    <a href="pages/features.html" class="btn-secondary">Explore all features →</a>
+  </div>
+</section>
+
+<!-- DUPE FINDER -->
+<section class="section" id="dupes">
+  <div class="dupes-inner">
+    <div class="dupes-text">
+      <div class="section-label" style="text-align:left;">The Smart Shopper's Edge</div>
+      <h2>Why Pay $325 When $35 Smells the Same?</h2>
+      <p>The fragrance industry's best-kept secret: many budget perfumes share nearly identical scent profiles with luxury counterparts. ScentSnap exposes those matches instantly.</p>
+      <p>Our dupe database is built from fragrance community consensus, expert comparisons, and shared ingredient analysis — not guesswork.</p>
+      <ul class="dupes-check-list">
+        <li><span class="check-icon">✦</span>Match percentages based on shared notes, scent family & community data</li>
+        <li><span class="check-icon">✦</span>Direct Amazon links for immediate shopping</li>
+        <li><span class="check-icon">✦</span>Savings displayed clearly — know exactly what you're keeping</li>
+        <li><span class="check-icon">✦</span>Multiple alternatives ranked by match accuracy</li>
+      </ul>
+      <div style="margin-top:28px;">
+        <a href="pages/dupe-finder.html" class="btn-primary">Learn About Dupe Finder</a>
+      </div>
+    </div>
+    <div class="dupe-example-card">
+      <div class="dupe-card-head">
+        <h4>You're looking at</h4>
+        <span>Baccarat Rouge 540 · ~$325</span>
+      </div>
+      <div class="dupe-card-body">
+        <div class="dupe-section-label">Cheaper Alternatives Found</div>
+        <div class="dupe-row">
+          <div><div class="dupe-name">Amber Oud Rouge</div><div class="dupe-brand">Al Haramain · 60ml</div></div>
+          <div><div class="dupe-price">~$35</div><div class="dupe-savings">Save $290 · 90% Match</div></div>
+        </div>
+        <div class="dupe-row">
+          <div><div class="dupe-name">Fakhar Rose</div><div class="dupe-brand">Lattafa · 100ml</div></div>
+          <div><div class="dupe-price">~$28</div><div class="dupe-savings">Save $297 · 82% Match</div></div>
+        </div>
+        <div class="dupe-row">
+          <div><div class="dupe-name">Cloud Intense</div><div class="dupe-brand">Ariana Grande · 100ml</div></div>
+          <div><div class="dupe-price">~$42</div><div class="dupe-savings">Save $283 · 70% Match</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testi-bg">
+  <div class="section-label">Real Users</div>
+  <h2 class="section-title">Loved by Fragrance Shoppers</h2>
+  <p class="section-sub">Real feedback from people who use ScentSnap every time they shop for perfume.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I was about to spend $325 on Baccarat Rouge. ScentSnap showed me a dupe for $35 that smells basically identical. This extension paid for itself immediately — and it's free!"</p>
+      <div class="testi-name">Sophia R.</div>
+      <div class="testi-handle">Fragrance enthusiast</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Finally a tool that explains what a perfume actually smells like in plain English, not the bizarre poetry brands use. 'Smells like ocean air on warm sandalwood' — I understand that!"</p>
+      <div class="testi-name">Maria L.</div>
+      <div class="testi-handle">Beauty blogger</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I never buy a new fragrance without checking ScentSnap first. The longevity and sillage ratings have been spot on every time. It's become part of my shopping routine."</p>
+      <div class="testi-name">Priya M.</div>
+      <div class="testi-handle">Perfume collector</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ (inline snippet) -->
+<section class="section" id="faq">
+  <div class="section-label">Common Questions</div>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <p class="section-sub">Quick answers. <a href="pages/faq.html" style="color:var(--rose);">See all questions →</a></p>
+  <div class="faq-inner">
+    <div class="faq-item">
+      <div class="faq-q">Is ScentSnap completely free?</div>
+      <div class="faq-a">Yes, 100% free. No subscription, no hidden fees, no premium tier. ScentSnap earns commission from Amazon purchases at no extra cost to you.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need to create an account?</div>
+      <div class="faq-a">No. Install the extension and it works instantly. No sign-up, no login, no account required.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Does ScentSnap track my browsing?</div>
+      <div class="faq-a">No. ScentSnap operates entirely with a built-in offline database. It does not collect, store, or transmit any personal data or browsing history. Your privacy is fully protected.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are the Amazon links affiliate links?</div>
+      <div class="faq-a">Yes. ScentSnap participates in the Amazon Associates Program. When you purchase through our links, we earn a small commission at no additional cost to you. This keeps the extension free.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Start Saving on Perfume Today</h2>
+  <p>Install in seconds. No account. No cost. Just smarter fragrance shopping.</p>
+  <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-white">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 8 L22 12" stroke="currentColor" stroke-width="2"/><path d="M12 8 L6 17" stroke="currentColor" stroke-width="2"/><path d="M6 17 L22 12" stroke="currentColor" stroke-width="2"/></svg>
+    Add to Chrome — It's Free
+  </a>
+  <p class="final-note">Works on Amazon · Sephora · Ulta · and more</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="footer-logo-icon">🌸</div> ScentSnap</div>
+        <p>The smartest way to shop for perfume. Instant scent analysis and budget dupe recommendations, right in your browser.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Extension</h5>
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Download Free</a>
+        <a href="pages/how-it-works.html">How It Works</a>
+        <a href="pages/features.html">Features</a>
+        <a href="pages/dupe-finder.html">Dupe Finder</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="pages/faq.html">FAQ</a>
+        <a href="pages/contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="pages/privacy-policy.html">Privacy Policy</a>
+        <a href="pages/faq.html#affiliate">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="affiliate-note"><strong style="color:rgba(255,255,255,0.45);">Amazon Affiliate Disclosure:</strong> ScentSnap is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. As an Amazon Associate, we earn from qualifying purchases at no additional cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 ScentSnap. All rights reserved.</span>
+      <span><a href="pages/privacy-policy.html">Privacy Policy</a> · <a href="pages/contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

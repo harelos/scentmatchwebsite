@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfume Dupe Finder – ScentSnap Free Chrome Extension</title>
+  <meta name="description" content="Find affordable perfume dupes that smell 90% similar to luxury fragrances at a fraction of the price. Free Chrome extension — no account needed.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/shared.css">
+  <style>
+    /* Hero variation */
+    .dupe-hero {
+      padding: 120px 5% 80px;
+      background: linear-gradient(160deg, var(--cream) 0%, #FAE8F0 60%, var(--warm) 100%);
+      text-align: center;
+    }
+    .dupe-hero-inner { max-width: 700px; margin: 0 auto; }
+    .dupe-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 66px);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.8px;
+    }
+    .dupe-hero h1 em { font-style: italic; color: var(--rose); }
+    .dupe-hero p { font-size: 18px; color: var(--text-mid); line-height: 1.7; margin-bottom: 36px; }
+    .dupe-hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+    /* Store Badge */
+    .chrome-store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 24px;
+      text-decoration: none;
+      transition: all 0.25s;
+      box-shadow: var(--shadow);
+    }
+    .chrome-store-badge:hover {
+      border-color: var(--rose-light);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    .chrome-badge-icon { font-size: 32px; }
+    .chrome-badge-text { text-align: left; }
+    .chrome-badge-small { font-size: 11px; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+    .chrome-badge-large { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+
+    /* How dupes work */
+    .dupe-explainer {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .dupe-explainer-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.12;
+      letter-spacing: -0.4px;
+    }
+    .dupe-explainer-text p { font-size: 15.5px; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px; }
+
+    /* Comparison table */
+    .comparison-table {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .comparison-header {
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      padding: 16px 22px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    .comparison-cell {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light);
+      border-right: 1px solid var(--border-light);
+      font-size: 13.5px;
+    }
+    .comparison-cell:last-child { border-right: none; }
+    .comparison-cell.head { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; background: var(--warm); }
+    .comparison-cell.original { color: var(--text); font-weight: 600; }
+    .comparison-cell.dupe { color: #0A8A5A; font-weight: 700; }
+    .comparison-cell .savings { font-size: 11px; color: #0A8A5A; font-weight: 600; margin-top: 2px; }
+    .match-badge { display: inline-block; background: rgba(10,138,90,0.1); border: 1px solid rgba(10,138,90,0.2); border-radius: 6px; padding: 1px 7px; font-size: 11px; color: #0A8A5A; font-weight: 700; }
+
+    /* Example dupes */
+    .dupes-showcase {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .dupe-showcase-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .dupe-showcase-card:hover { border-color: var(--rose-light); box-shadow: 0 12px 40px rgba(181,23,78,0.1); transform: translateY(-3px); }
+    .dupe-card-original {
+      background: linear-gradient(135deg, #1A0810, #0E0408);
+      padding: 20px;
+      color: #fff;
+    }
+    .dupe-orig-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .dupe-orig-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+    .dupe-orig-price { font-size: 13px; color: rgba(255,255,255,0.5); }
+    .dupe-alts { padding: 16px 20px; }
+    .dupe-alts-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; margin-bottom: 12px; }
+    .dupe-alt-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .dupe-alt-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .dupe-alt-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .dupe-alt-brand { font-size: 11px; color: var(--text-dim); }
+    .dupe-alt-price { font-size: 13px; font-weight: 700; color: var(--rose); }
+    .dupe-alt-match { font-size: 10.5px; color: #0A8A5A; font-weight: 600; }
+
+    /* Disclaimer */
+    .disclaimer-box {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--warm);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      font-size: 13.5px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+    .disclaimer-box strong { color: var(--text); }
+
+    @media (max-width: 860px) {
+      .dupe-explainer { grid-template-columns: 1fr; gap: 36px; }
+      .dupes-showcase { grid-template-columns: 1fr; max-width: 400px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="logo-icon">🌸</div>
+    ScentSnap
+  </a>
+  <ul class="nav-links">
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="features.html">Features</a></li>
+    <li><a href="dupe-finder.html" class="active">Dupe Finder</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="nav-cta">Add to Chrome</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="dupe-hero">
+  <div class="dupe-hero-inner">
+    <div class="section-label">Perfume Dupe Finder</div>
+    <h1>Find the Same Scent<br>for <em>1/10th the Price</em></h1>
+    <p>ScentSnap's Dupe Finder surfaces the best budget alternatives to luxury fragrances — automatically, as you shop. Up to 90% match accuracy.</p>
+    <div class="dupe-hero-actions">
+      <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 8 L22 12" stroke="currentColor" stroke-width="2"/><path d="M12 8 L6 17" stroke="currentColor" stroke-width="2"/><path d="M6 17 L22 12" stroke="currentColor" stroke-width="2"/></svg>
+        Add to Chrome Free
+      </a>
+      <a href="chrome-webstore-link" class="chrome-store-badge" target="_blank" rel="noopener">
+        <div class="chrome-badge-icon">🏪</div>
+        <div class="chrome-badge-text">
+          <div class="chrome-badge-small">Available on the</div>
+          <div class="chrome-badge-large">Chrome Web Store</div>
+        </div>
+      </a>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:16px;">Free · No account needed · Works on Amazon, Sephora, Ulta & more</p>
+  </div>
+</section>
+
+<!-- HOW DUPES WORK -->
+<section class="section">
+  <div class="dupe-explainer">
+    <div class="dupe-explainer-text">
+      <div class="section-label" style="text-align:left;">The Secret</div>
+      <h2>Why Dupes Actually Work</h2>
+      <p>High-end fragrances cost so much because of brand prestige, bottle design, and marketing — not because the scent formula is truly unique. Many budget brands use nearly identical ingredient combinations.</p>
+      <p>The fragrance community has spent years cataloguing these similarities. ScentSnap packages this collective knowledge into instant browser-level intelligence that activates wherever you shop.</p>
+      <p>Every dupe recommendation in ScentSnap is based on shared scent notes, scent family classification, and community consensus — not guesswork. Match percentages reflect how similar the scent profiles are, not an exact chemical guarantee.</p>
+    </div>
+    <div class="comparison-table">
+      <div class="comparison-header">Example: Creed Aventus</div>
+      <div class="comparison-row">
+        <div class="comparison-cell head">Fragrance</div>
+        <div class="comparison-cell head">Price</div>
+        <div class="comparison-cell head">Match</div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell original">Creed Aventus<br><span style="font-size:11px;color:var(--text-dim);font-weight:400;">Creed · 100ml</span></div>
+        <div class="comparison-cell original">~$435</div>
+        <div class="comparison-cell original">Original</div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell">Invictus Legend<br><span style="font-size:11px;color:var(--text-dim);">Paco Rabanne</span></div>
+        <div class="comparison-cell dupe">~$65<div class="savings">Save $370</div></div>
+        <div class="comparison-cell"><span class="match-badge">88%</span></div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell">Amouage Reflection<br><span style="font-size:11px;color:var(--text-dim);">Armaf</span></div>
+        <div class="comparison-cell dupe">~$30<div class="savings">Save $405</div></div>
+        <div class="comparison-cell"><span class="match-badge">85%</span></div>
+      </div>
+      <div class="comparison-row" style="border-bottom:none;">
+        <div class="comparison-cell">Substance Cologne<br><span style="font-size:11px;color:var(--text-dim);">18.21 Man Made</span></div>
+        <div class="comparison-cell dupe">~$25<div class="savings">Save $410</div></div>
+        <div class="comparison-cell"><span class="match-badge">78%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DUPE EXAMPLES -->
+<section class="section" style="background:var(--warm);">
+  <div class="section-label">Sample Database</div>
+  <h2 class="section-title">Popular Dupe Matches</h2>
+  <p class="section-sub">A preview of what ScentSnap finds automatically when you're browsing these luxury fragrances.</p>
+  <div class="dupes-showcase">
+    <div class="dupe-showcase-card">
+      <div class="dupe-card-original">
+        <div class="dupe-orig-label">Luxury Original</div>
+        <div class="dupe-orig-name">Baccarat Rouge 540</div>
+        <div class="dupe-orig-price">Maison Francis Kurkdjian · ~$325</div>
+      </div>
+      <div class="dupe-alts">
+        <div class="dupe-alts-label">Budget Alternatives</div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Amber Oud Rouge</div><div class="dupe-alt-brand">Al Haramain</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$35</div><div class="dupe-alt-match">90% Match</div></div>
+        </div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Fakhar Rose</div><div class="dupe-alt-brand">Lattafa</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$28</div><div class="dupe-alt-match">82% Match</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="dupe-showcase-card">
+      <div class="dupe-card-original">
+        <div class="dupe-orig-label">Luxury Original</div>
+        <div class="dupe-orig-name">Black Opium</div>
+        <div class="dupe-orig-price">Yves Saint Laurent · ~$120</div>
+      </div>
+      <div class="dupe-alts">
+        <div class="dupe-alts-label">Budget Alternatives</div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Opulent Shaik No.77</div><div class="dupe-alt-brand">Shaik</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$32</div><div class="dupe-alt-match">87% Match</div></div>
+        </div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Velvet Orchid</div><div class="dupe-alt-brand">Tom Ford dupe · Zara</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$18</div><div class="dupe-alt-match">76% Match</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="dupe-showcase-card">
+      <div class="dupe-card-original">
+        <div class="dupe-orig-label">Luxury Original</div>
+        <div class="dupe-orig-name">Good Girl</div>
+        <div class="dupe-orig-price">Carolina Herrera · ~$130</div>
+      </div>
+      <div class="dupe-alts">
+        <div class="dupe-alts-label">Budget Alternatives</div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Lady Million Fortune</div><div class="dupe-alt-brand">Paco Rabanne</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$48</div><div class="dupe-alt-match">83% Match</div></div>
+        </div>
+        <div class="dupe-alt-item">
+          <div><div class="dupe-alt-name">Lovely Femme</div><div class="dupe-alt-brand">Armaf</div></div>
+          <div style="text-align:right;"><div class="dupe-alt-price">~$22</div><div class="dupe-alt-match">79% Match</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="section">
+  <div class="section-label">Transparency</div>
+  <h2 class="section-title">Our Dupe Methodology</h2>
+  <p class="section-sub">We believe in being upfront about how our matching system works.</p>
+  <div class="disclaimer-box">
+    <p><strong>How we build dupe matches:</strong> Our database is curated from fragrance community research, expert reviews on platforms like Fragrantica and Basenotes, and shared ingredient analysis. Match percentages are estimates based on shared scent notes, scent family classification, and community consensus.</p>
+    <p style="margin-top:12px;"><strong>What match percentages mean:</strong> A 90% match means the budget fragrance shares a very similar scent profile — the same dominant notes, similar progression, and comparable character. It does not mean the formulas are identical. Scent is subjective; personal experience may vary.</p>
+    <p style="margin-top:12px;"><strong>Amazon Affiliate Disclosure:</strong> ScentSnap participates in the Amazon Services LLC Associates Program. Links to Amazon products may earn us a small commission at no additional cost to you. All recommendations are made based on fragrance merit, not affiliate relationships.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center;padding-top:20px;">
+  <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-primary" style="font-size:16px;padding:17px 34px;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 8 L22 12" stroke="currentColor" stroke-width="2"/><path d="M12 8 L6 17" stroke="currentColor" stroke-width="2"/><path d="M6 17 L22 12" stroke="currentColor" stroke-width="2"/></svg>
+    Install ScentSnap Free
+  </a>
+  <p style="font-size:12px;color:var(--text-dim);margin-top:14px;">No account · No payment · Works instantly</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="footer-logo-icon">🌸</div> ScentSnap</div>
+        <p>The smartest way to shop for perfume. Instant scent analysis and budget dupe recommendations, right in your browser.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Extension</h5>
+        <a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Download Free</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="features.html">Features</a>
+        <a href="dupe-finder.html">Dupe Finder</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="faq.html#affiliate">Affiliate Disclosure</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="affiliate-note"><strong style="color:rgba(255,255,255,0.45);">Amazon Affiliate Disclosure:</strong> ScentSnap participates in the Amazon Services LLC Associates Program. As an Amazon Associate, we earn from qualifying purchases at no additional cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 ScentSnap. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
